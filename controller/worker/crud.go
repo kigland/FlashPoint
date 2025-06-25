@@ -3,6 +3,7 @@ package worker
 import (
 	"log"
 	"net/http"
+	"strconv"
 	"time"
 
 	"github.com/gin-gonic/gin"
@@ -14,7 +15,7 @@ import (
 func setCache(c *gin.Context) {
 	var req apimod.SetCacheReq
 	if err := c.ShouldBindJSON(&req); err != nil {
-		log.Println("[SET]", err)
+		log.Println("[SET] err=" + err.Error())
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
@@ -25,7 +26,7 @@ func setCache(c *gin.Context) {
 	}
 
 	shared.Cache.Set(req.Key, req.Value, time.Duration(req.TTL)*time.Second, t)
-	log.Println("[SET]", req.Key, req.TTL, t)
+	log.Println("[SET] key=" + req.Key + " ttl=" + strconv.Itoa(req.TTL) + "s" + " type=" + string(t))
 
 	c.JSON(http.StatusOK, apimod.SetCacheResp{Key: req.Key})
 }

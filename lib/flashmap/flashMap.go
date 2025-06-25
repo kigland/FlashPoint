@@ -2,6 +2,7 @@ package flashmap
 
 import (
 	"log"
+	"strconv"
 	"sync"
 	"time"
 )
@@ -80,6 +81,7 @@ func (f *FlashMap) Get(key string) (Value, bool) {
 }
 
 func (f *FlashMap) GC() {
+	count := 0
 	f.lck.Lock()
 	defer f.lck.Unlock()
 
@@ -87,6 +89,11 @@ func (f *FlashMap) GC() {
 		if value.ExpireAt.Before(time.Now()) {
 			delete(f.cache, key)
 			log.Println("[GC] key=" + key)
+			count++
 		}
+	}
+
+	if count > 0 {
+		log.Println("[GC] deleted " + strconv.Itoa(count) + " keys")
 	}
 }

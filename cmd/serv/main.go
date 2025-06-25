@@ -1,6 +1,7 @@
 package main
 
 import (
+	"log"
 	"time"
 
 	"github.com/KevinZonda/GoX/pkg/iox"
@@ -15,6 +16,9 @@ func initCfg() {
 	panicx.NotNilErr(shared.LoadConfig(bs))
 }
 
+var gcInterval = time.Minute * 10
+var gcTicker = time.NewTicker(gcInterval)
+
 func main() {
 	initCfg()
 	shared.Init()
@@ -22,8 +26,9 @@ func main() {
 	controller.Init(shared.Engine)
 
 	go func() {
+		log.Println("[GC] start lazy GC daemon with interval " + gcInterval.String())
 		for {
-			time.Sleep(time.Minute * 10)
+			<-gcTicker.C
 			shared.Cache.GC()
 		}
 	}()

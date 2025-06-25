@@ -5,6 +5,8 @@ import "encoding/json"
 type Config struct {
 	Addr  string `json:"addr"`
 	Debug bool   `json:"debug"`
+
+	APIKeys []string `json:"api_keys"`
 }
 
 var cfg *Config

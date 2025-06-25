@@ -18,4 +18,7 @@ build-debug:
 run:
 	./build/serv
 
-.PHONY: init docker docker-run build build-debug run
+dev:
+	go run cmd/serv/main.go
+
+.PHONY: init docker docker-run build build-debug run dev

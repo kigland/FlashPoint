@@ -39,7 +39,14 @@ func getCache(c *gin.Context) {
 
 	switch value.Type {
 	case flashmap.TypeBinary:
-		c.Data(http.StatusOK, value.Mime, value.Value.([]byte))
+		switch vT := value.Value.(type) {
+		case []byte:
+			c.Data(http.StatusOK, value.Mime, vT)
+		case string:
+			c.Data(http.StatusOK, value.Mime, []byte(vT))
+		default:
+			c.JSON(http.StatusOK, value.Value)
+		}
 	case flashmap.TypeText:
 		c.String(http.StatusOK, value.Value.(string))
 	case flashmap.TypeJSON:

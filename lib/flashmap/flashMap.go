@@ -46,11 +46,12 @@ func NewFlashMap() *FlashMap {
 	}
 }
 
-func (f *FlashMap) Set(key string, value any, ttl time.Duration, t Type) {
+func (f *FlashMap) Set(key string, value any, ttl time.Duration, t Type, mime string) {
 	v := Value{
 		Value:    value,
 		ExpireAt: time.Now().Add(ttl),
 		Type:     t,
+		Mime:     mime,
 	}
 	f.lck.Lock()
 	defer f.lck.Unlock()

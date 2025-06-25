@@ -17,7 +17,6 @@ func initCfg() {
 }
 
 var gcInterval = time.Minute * 10
-var gcTicker = time.NewTicker(gcInterval)
 
 func main() {
 	initCfg()
@@ -25,6 +24,7 @@ func main() {
 
 	controller.Init(shared.Engine)
 
+	gcTicker := time.NewTicker(gcInterval)
 	go func() {
 		log.Println("[GC] start lazy GC daemon with interval " + gcInterval.String())
 		for {

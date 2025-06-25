@@ -6,6 +6,7 @@ require (
 	github.com/KevinZonda/GoX v0.0.22
 	github.com/gin-contrib/cors v1.7.6
 	github.com/gin-gonic/gin v1.10.1
+	github.com/google/uuid v1.6.0
 )
 
 require (

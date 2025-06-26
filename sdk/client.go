@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
+	"strings"
 	"time"
 
 	"github.com/kigland/FlashPoint/apimod"
@@ -17,6 +18,7 @@ type Client struct {
 }
 
 func NewClient(baseURL, apiKey string) *Client {
+	baseURL = strings.TrimSuffix(baseURL, "/")
 	return &Client{
 		BaseURL: baseURL,
 		APIKey:  apiKey,
@@ -102,4 +104,12 @@ func (c *Client) SetJSON(key string, value any, ttl time.Duration, mime string) 
 	}
 
 	return c.set(body)
+}
+
+func (c *Client) URL(req apimod.SetCacheResp) string {
+	return c.BaseURL + "/" + req.Key
+}
+
+func (c *Client) URLRaw(key string) string {
+	return c.BaseURL + "/" + key
 }
